@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="./src/output.css" rel="stylesheet">
-    <link rel="icon" href="./img/logo.png" type="image/x-icon">
+    <link rel="icon" href="./img/logo-dark.png" type="icon">
     <title>Astronomy Picture of the Day</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,11 +14,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Intel+One+Mono:wght@300&display=swap" rel="stylesheet">
 </head>
 
-<body class="bg-deep text-lime dark:bg-vanilla dark:text-deep transition-colors duration-800">
+<body
+    class="bg-deep text-vanilla dark:bg-vanilla dark:text-deep transition-colors duration-800 selection:bg-vanilla selection:text-deep dark:selection:bg-deep dark:selection:text-vanilla">
     <header
         class="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between border-b border-current bg-deep dark:bg-vanilla transition-colors duration-800 px-4">
         <div class="flex h-full min-w-0 items-center gap-3 sm:gap-4">
-            <img class="h-8 w-8 sm:h-10 sm:w-10 object-contain block dark:hidden" src="./img/logoDark.png" alt="Logo">
+            <img class="h-8 w-8 sm:h-10 sm:w-10 object-contain block dark:hidden" src="./img/logo-dark.png" alt="Logo">
             <img class="h-8 w-8 sm:h-10 sm:w-10 object-contain hidden dark:block" src="./img/logo.png" alt="Logo">
 
             <h1
@@ -27,25 +28,82 @@
         </div>
 
         <button id="toggleTheme"
-            class="h-full px-4 text-lg tracking-wide sm:text-xl md:text-2xl lg:text-3xl hover:cursor-pointer hover:bg-lime hover:text-deep dark:hover:bg-deep dark:hover:text-vanilla after:content-['dark!.'] dark:after:content-['light!'] transition-colors duration-800">
+            class="h-full px-4 text-lg tracking-wide sm:text-xl md:text-2xl lg:text-3xl hover:cursor-pointer hover:bg-vanilla hover:text-deep dark:hover:bg-deep dark:hover:text-vanilla after:content-['dark!.'] dark:after:content-['light!'] transition-colors duration-800">
         </button>
     </header>
 
-    <main class="pt-16 "></main>
-    <footer></footer>
+    <main class="pt-20 px-4 pb-4 flex flex-col lg:flex-row gap-6 min-h-[calc(100vh-5rem)]">
+        <div class="w-full lg:w-1/2 lg:h-[calc(100vh-6rem)] lg:sticky lg:top-24">
+            <a id="link-to-hd" href=""><img id="img" alt="Loading..." class="w-full h-full object-cover rounded-lg"></a>
+
+        </div>
+
+        <div class="w-full lg:w-1/2 flex flex-col justify-center lg:h-[calc(100vh-6rem)] lg:sticky lg:top-24">
+            <h1 id="title" class="text-2xl font-bold mb-2 md:text-3xl lg:text-4xl"></h1>
+            <h2 id="date-copyright" class="text-sm opacity-75 mb-4"></h2>
+
+            <div
+                class="overflow-y-auto pr-2 max-h-95 lg:max-h-none lg:flex-1 [scrollbar-thin] [scrollbar-color:currentColor_transparent]">
+                <p id="explanation" class="leading-relaxed text-base md:text-lg text-justify"></p>
+            </div>
+        </div>
+
+    </main>
+
+    <footer
+        class="flex h-32 items-center justify-between border-t border-current bg-deep dark:bg-vanilla transition-colors duration-800 px-4">
+    </footer>
 
     <script>
         const btn = document.getElementById('toggleTheme');
         if (localStorage.getItem('theme') === 'dark') {
             document.body.classList.add('dark');
         }
-
         btn.addEventListener('click', () => {
             const isDark = document.body.classList.toggle('dark');
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
         });
+
+        const key = "";
+        const url = `https://api.nasa.gov/planetary/apod?api_key=`;
+
+        const img = document.querySelector("#img");
+        const linkToHD = document.querySelector("#link-to-hd");
+        const explanation = document.querySelector("#explanation");
+        const dateCopyright = document.querySelector("#date-copyright");
+        const title = document.querySelector("#title");
+
+        function fetchData() {
+            fetch(url + key)
+                .then(response => {
+                    if (!response.ok) throw new Error('Network error');
+                    return response.json();
+                })
+                .then(json => {
+                    console.log(json);
+
+                    const copyrightText = json.copyright ? `©${json.copyright}` : '';
+                    dateCopyright.textContent = `${json.date} ${copyrightText}`;
+                    explanation.textContent = json.explanation;
+                    title.textContent = json.title;
+
+                    if (json.media_type === 'video') {
+                        const iframe = document.createElement('iframe');
+                        iframe.src = json.url;
+                        iframe.className = "w-full h-64 lg:h-full rounded-lg";
+                        linkToHD.replaceWith(iframe);
+                    } else {
+                        img.setAttribute("src", json.url);
+                        linkToHD.setAttribute("href", json.hdurl || json.url);
+                    }
+                })
+                .catch(error => {
+                    console.error('Could not get data:', error);
+                    title.textContent = "Could not get data";
+                });
+        }
+        fetchData();
     </script>
 </body>
-
 
 </html>
