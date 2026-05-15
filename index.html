@@ -16,6 +16,7 @@
 
 <body
     class="bg-deep text-vanilla dark:bg-vanilla dark:text-deep transition-colors duration-800 selection:bg-vanilla selection:text-deep dark:selection:bg-deep dark:selection:text-vanilla">
+
     <header
         class="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between border-b border-current bg-deep dark:bg-vanilla transition-colors duration-800 px-4">
         <div class="flex h-full min-w-0 items-center gap-3 sm:gap-4">
@@ -32,27 +33,51 @@
         </button>
     </header>
 
-    <main class="pt-20 px-4 pb-4 flex flex-col lg:flex-row gap-6 min-h-[calc(100vh-5rem)]">
-        <div class="w-full lg:w-1/2 lg:h-[calc(100vh-6rem)] lg:sticky lg:top-24">
-            <a id="link-to-hd" href=""><img id="img" alt="Loading..." class="w-full h-full object-cover rounded-lg"></a>
+    <main class="pt-20 px-4 pb-8 flex flex-col lg:flex-row gap-8 min-h-[calc(100vh-16rem)] max-w-7xl mx-auto w-full">
 
+        <div
+            class="w-full lg:w-1/2 h-[50vh] sm:h-[60vh] lg:h-[calc(100vh-8rem)] lg:sticky lg:top-24 flex items-center justify-center bg-vanilla/5 dark:bg-deep/5 rounded-lg overflow-hidden">
+            <a id="link-to-hd" href="" class="w-full h-full block">
+                <img id="img" alt="Loading NASA APOD..."
+                    class="w-full h-full object-cover opacity-0 transition-opacity duration-500">
+            </a>
         </div>
 
-        <div class="w-full lg:w-1/2 flex flex-col justify-center lg:h-[calc(100vh-6rem)] lg:sticky lg:top-24">
-            <h1 id="title" class="text-2xl font-bold mb-2 md:text-3xl lg:text-4xl"></h1>
-            <h2 id="date-copyright" class="text-sm opacity-75 mb-4"></h2>
+        <div class="w-full lg:w-1/2 flex flex-col lg:h-[calc(100vh-8rem)] lg:sticky lg:top-24 py-2">
+            <h1 id="title" class="text-2xl font-bold mb-2 md:text-3xl lg:text-4xl tracking-tight">Загрузка...</h1>
+            <h2 id="date-copyright" class="text-sm opacity-75 mb-6 border-b border-current/20 pb-2"></h2>
 
             <div
-                class="overflow-y-auto pr-2 max-h-95 lg:max-h-none lg:flex-1 [scrollbar-thin] [scrollbar-color:currentColor_transparent]">
-                <p id="explanation" class="leading-relaxed text-base md:text-lg text-justify"></p>
+                class="overflow-y-auto pr-3 max-h-64 lg:max-h-none lg:flex-1 [scrollbar-width:thin] [scrollbar-color:currentColor_transparent]">
+                <p id="explanation"
+                    class="leading-relaxed text-base md:text-lg text-justify opacity-90 whitespace-pre-line"></p>
             </div>
         </div>
 
     </main>
 
-    <footer
-        class="flex h-32 items-center justify-between border-t border-current bg-deep dark:bg-vanilla transition-colors duration-800 px-4">
+    <footer class="mt-auto border-t border-current bg-deep dark:bg-vanilla transition-colors duration-800 px-4 py-8">
+        <div class="max-w-7xl mx-auto flex flex-col gap-6 text-sm md:text-base opacity-80">
+            <div class="space-y-2 max-w-2xl">
+                <p>Each day a different image or photograph of our fascinating universe is featured, along with a brief
+                    explanation written by a professional astronomer.</p>
+                <p>This website was created by using open NASA APOD API.</p>
+                <p>Created by manaman-z. May 2026.</p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row sm:flex-wrap gap-x-6 gap-y-2 pt-4 border-t border-current/10">
+                <a class="underline decoration-dotted hover:bg-vanilla hover:text-deep dark:hover:bg-deep dark:hover:text-vanilla px-1 rounded transition-colors"
+                    href="https://nasa.gov" target="_blank" rel="noopener">nasa.gov</a>
+                <a class="underline decoration-dotted hover:bg-vanilla hover:text-deep dark:hover:bg-deep dark:hover:text-vanilla px-1 rounded transition-colors"
+                    href="https://api.nasa.gov/" target="_blank" rel="noopener">api.nasa.gov</a>
+                <a class="underline decoration-dotted hover:bg-vanilla hover:text-deep dark:hover:bg-deep dark:hover:text-vanilla px-1 rounded transition-colors"
+                    href="https://github.com/nasa" target="_blank" rel="noopener">github.com/nasa</a>
+                <a class="underline decoration-dotted hover:bg-vanilla hover:text-deep dark:hover:bg-deep dark:hover:text-vanilla px-1 rounded transition-colors"
+                    href="https://github.com/manaman-z" target="_blank" rel="noopener">github.com/manaman-z</a>
+            </div>
+        </div>
     </footer>
+
 
     <script>
         const btn = document.getElementById('toggleTheme');
@@ -82,24 +107,29 @@
                 .then(json => {
                     console.log(json);
 
-                    const copyrightText = json.copyright ? `©${json.copyright}` : '';
-                    dateCopyright.textContent = `${json.date} ${copyrightText}`;
+                    const copyrightText = json.copyright ? ` © ${json.copyright}` : '';
+                    dateCopyright.textContent = `${json.date}${copyrightText}`;
                     explanation.textContent = json.explanation;
                     title.textContent = json.title;
 
                     if (json.media_type === 'video') {
                         const iframe = document.createElement('iframe');
                         iframe.src = json.url;
-                        iframe.className = "w-full h-64 lg:h-full rounded-lg";
+                        iframe.className = "w-full h-full rounded-lg min-h-[300px]";
                         linkToHD.replaceWith(iframe);
                     } else {
+                        img.onload = function () {
+                            img.classList.remove('opacity-0');
+                            img.classList.add('opacity-100');
+                        };
                         img.setAttribute("src", json.url);
                         linkToHD.setAttribute("href", json.hdurl || json.url);
                     }
+
                 })
                 .catch(error => {
                     console.error('Could not get data:', error);
-                    title.textContent = "Could not get data";
+                    title.textContent = "Could not get data :(";
                 });
         }
         fetchData();
