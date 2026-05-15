@@ -3,7 +3,7 @@
 A minimalist, responsive, and dark/light-mode capable web application that displays NASA's Astronomy Picture of the Day using the official open NASA API. 
 
 ## 🚀 Live Demo
-Check out the live website here: [https://manaman-z/github.io/astronomy-picture-of-the-day](https://manaman-z/github.io/astronomy-picture-of-the-day/)
+Check out the live website here: [https://manaman-z.github.io/astronomy-picture-of-the-day/](https://manaman-z.github.io/astronomy-picture-of-the-day/)
 
 ## ✨ Features
 * **Real-time Data:** Fetches the daily astronomical image/video and description directly from NASA.
