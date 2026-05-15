@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./src/output.css" rel="stylesheet">
+    <link rel="icon" href="./img/logo.png" type="image/x-icon">
+    <title>Astronomy Picture of the Day</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Intel+One+Mono:wght@300&display=swap" rel="stylesheet">
+</head>
+
+<body class="bg-deep text-lime dark:bg-vanilla dark:text-deep transition-colors duration-800">
+    <header
+        class="fixed inset-x-0 top-0 z-50 flex h-16 items-center justify-between border-b border-current bg-deep dark:bg-vanilla transition-colors duration-800 px-4">
+        <div class="flex h-full min-w-0 items-center gap-3 sm:gap-4">
+            <img class="h-8 w-8 sm:h-10 sm:w-10 object-contain block dark:hidden" src="./img/logoDark.png" alt="Logo">
+            <img class="h-8 w-8 sm:h-10 sm:w-10 object-contain hidden dark:block" src="./img/logo.png" alt="Logo">
+
+            <h1
+                class="h-full flex items-center truncate text-lg tracking-wide sm:text-xl md:text-2xl lg:text-3xl after:content-['a.p.o.t.d'] sm:after:content-['astronomy_picture_of_the_day']">
+            </h1>
+        </div>
+
+        <button id="toggleTheme"
+            class="h-full px-4 text-lg tracking-wide sm:text-xl md:text-2xl lg:text-3xl hover:cursor-pointer hover:bg-lime hover:text-deep dark:hover:bg-deep dark:hover:text-vanilla after:content-['dark!.'] dark:after:content-['light!'] transition-colors duration-800">
+        </button>
+    </header>
+
+    <main class="pt-16 "></main>
+    <footer></footer>
+
+    <script>
+        const btn = document.getElementById('toggleTheme');
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark');
+        }
+
+        btn.addEventListener('click', () => {
+            const isDark = document.body.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
+    </script>
+</body>
+
+
+</html>

@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+body {
+  font-family: "Intel One Mono", monospace;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+}
+@theme {
+  --color-deep: #161b1d;
+  --color-lime: #7aff05;
+  --color-vanilla: #efe6de;
+}
