@@ -322,8 +322,8 @@
   .min-h-\[calc\(100vh-5rem\)\] {
     min-height: calc(100vh - 5rem);
   }
-  .min-h-\[calc\(100vh-16rem\)\] {
-    min-height: calc(100vh - 16rem);
+  .h-screen {
+    height: 100vh;
   }
   .min-h-\[calc\(vh-5rem\)\] {
     min-height: calc(vh - 5rem);
