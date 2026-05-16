@@ -235,6 +235,9 @@
   .h-16 {
     height: calc(var(--spacing) * 16);
   }
+  .h-\[50\] {
+    height: 50;
+  }
   .h-\[50vh\] {
     height: 50vh;
   }
@@ -635,6 +638,11 @@
   .lg\:h-\[calc\(100vh-8rem\)\] {
     @media (width >= 64rem) {
       height: calc(100vh - 8rem);
+    }
+  }
+  .lg\:h-full {
+    @media (width >= 64rem) {
+      height: 100%;
     }
   }
   .lg\:max-h-none {
